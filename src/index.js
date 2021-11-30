@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 
-const gendiff = (filepath1, filepath2) => {
+const genDiff = (filepath1, filepath2) => {
   /* Требования: 
     Сравниваются данные, а не строки файлов.
     Две строчки дифа, отвечающие за различия поля, должны находиться рядом.
@@ -28,4 +28,4 @@ const gendiff = (filepath1, filepath2) => {
   return result;
 };
 
-export default gendiff;
+export default genDiff;
