@@ -3,11 +3,13 @@
 import { Command } from 'commander/esm.mjs';
 const program = new Command();
 
-program.version('0.0.1', '-v, --vers', 'output the current version')
+program
+  .arguments('<filepath1> <filepath2>')
+  .version('0.0.1', '-V, --vers', 'output the current version')
   .description('Compares two configuration files and shows a difference.')
   .parse()
-  .option('-v, --version' , 'output the version number')
-  .option('-h, --help', 'output usage information');
+  .help('-h, --help', 'output usage information')
+  .options('-f, --format [type]', 'output format');
 
 const options = program.opts();
 console.log('Options:');
