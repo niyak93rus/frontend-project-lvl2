@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 import { readFileSync } from 'fs';
-import _ from 'lodash'
-import * as path from 'path'
+import _ from 'lodash';
+import * as path from 'path';
 
 const genDiff = (filename1, filename2) => {
   const path1 = path.resolve(process.cwd(), filename1);
@@ -8,7 +9,7 @@ const genDiff = (filename1, filename2) => {
 
   const file1 = readFileSync(path1);
   const file2 = readFileSync(path2);
-  
+
   const obj1 = JSON.parse(file1);
   const obj2 = JSON.parse(file2);
 
@@ -19,19 +20,20 @@ const genDiff = (filename1, filename2) => {
 
   let result = '{\n';
   sortedKeys.map((key) => {
-      if (!_.has(obj2, key)) {
-        result += `  - ${key}: ${obj1[key]} \n`;
-      } else if (!_.has(obj1, key)) {
-        result += `  + ${key}: ${obj2[key]} \n`;
-      } else if (obj1[key] !== obj2[key]) {
-        result += `  - ${key}: ${obj1[key]} \n`;
-        result += `  + ${key}: ${obj2[key]} \n`;
-      } else {
-        result += `    ${key}: ${obj1[key]} \n`;
-      }
+    if (!_.has(obj2, key)) {
+      result += `  - ${key}: ${obj1[key]} \n`;
+    } else if (!_.has(obj1, key)) {
+      result += `  + ${key}: ${obj2[key]} \n`;
+    } else if (obj1[key] !== obj2[key]) {
+      result += `  - ${key}: ${obj1[key]} \n`;
+      result += `  + ${key}: ${obj2[key]} \n`;
+    } else {
+      result += `    ${key}: ${obj1[key]} \n`;
+    }
+    return result;
   });
 
-  result += '}'
+  result += '}';
 
   return console.log(result.trim());
 };
