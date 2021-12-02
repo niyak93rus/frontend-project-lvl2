@@ -1,6 +1,5 @@
 import { readFileSync } from 'fs';
 import _ from 'lodash'
-import { cwd } from 'process';
 import * as path from 'path'
 
 const genDiff = (filename1, filename2) => {
