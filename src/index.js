@@ -21,21 +21,21 @@ const genDiff = (filename1, filename2) => {
   let result = '{\n';
   sortedKeys.map((key) => {
     if (!_.has(obj2, key)) {
-      result += `  - ${key}: ${obj1[key]} \n`;
+      result += `  - ${key}: ${obj1[key]}\n`;
     } else if (!_.has(obj1, key)) {
-      result += `  + ${key}: ${obj2[key]} \n`;
+      result += `  + ${key}: ${obj2[key]}\n`;
     } else if (obj1[key] !== obj2[key]) {
-      result += `  - ${key}: ${obj1[key]} \n`;
-      result += `  + ${key}: ${obj2[key]} \n`;
+      result += `  - ${key}: ${obj1[key]}\n`;
+      result += `  + ${key}: ${obj2[key]}\n`;
     } else {
-      result += `    ${key}: ${obj1[key]} \n`;
+      result += `    ${key}: ${obj1[key]}\n`;
     }
     return result;
   });
 
   result += '}';
 
-  return console.log(result.trim());
+  return result.trim();
 };
 
 export default genDiff;
