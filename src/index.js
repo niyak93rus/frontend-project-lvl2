@@ -1,9 +1,14 @@
 import { readFileSync } from 'fs';
 import _ from 'lodash'
+import { cwd } from 'process';
+import * as path from 'path'
 
-const genDiff = (filepath1, filepath2) => {
-  const file1 = readFileSync(filepath1);
-  const file2 = readFileSync(filepath2);
+const genDiff = (filename1, filename2) => {
+  const path1 = path.resolve(process.cwd(), filename1);
+  const path2 = path.resolve(process.cwd(), filename2);
+
+  const file1 = readFileSync(path1);
+  const file2 = readFileSync(path2);
   
   const obj1 = JSON.parse(file1);
   const obj2 = JSON.parse(file2);
