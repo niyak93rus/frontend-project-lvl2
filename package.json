@@ -1,8 +1,5 @@
 {
   "name": "@hexlet/code",
-  "jest": {
-    "verbose": true
-  },
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/niyak93rus/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/niyak93rus/frontend-project-lvl2/actions)",
   "main": "index.js",
@@ -26,6 +23,7 @@
   "dependencies": {
     "@jest/globals": "^27.4.2",
     "commander": "^8.3.0",
+    "js-yaml": "^4.1.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
