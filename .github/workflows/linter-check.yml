@@ -1,4 +1,4 @@
-name: Lint
+name: Tests and linter
 
 on:
   push:
@@ -28,3 +28,12 @@ jobs:
         uses: wearerequired/lint-action@v1
         with:
           eslint: true
+  run-coverage:  
+    steps:
+  - name: Test & publish code coverage
+    uses: paambaati/codeclimate-action@v3.0.0
+    env:
+      CC_TEST_REPORTER_ID: <code_climate_reporter_id>
+    with:
+      coverageCommand: npm run coverage
+      debug: true  
