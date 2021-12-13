@@ -28,13 +28,3 @@ jobs:
         uses: wearerequired/lint-action@v1
         with:
           eslint: true
-
-  run-coverage:
-    steps:
-      - name: Test & publish code coverage
-      uses: paambaati/codeclimate-action@v3.0.0
-      env:
-        CODE_COVERAGE_ID: ${{ secrets.CODE_COVERAGE_ID }}
-      with:
-        coverageCommand: npm run coverage
-        debug: true  
