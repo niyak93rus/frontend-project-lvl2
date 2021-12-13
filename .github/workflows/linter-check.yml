@@ -1,4 +1,4 @@
-name: Linter
+name: Linter & Code coverage
 
 on:
   push:
@@ -28,3 +28,14 @@ jobs:
         uses: wearerequired/lint-action@v1
         with:
           eslint: true
+
+      - name: Test & publish code coverage
+        # Publish code coverage on Code Climate
+        # https://github.com/paambaati/codeclimate-action
+        uses: paambaati/codeclimate-action@v2.7.4
+        # Add Code Climate secret key
+        env:
+          CODE_COVERAGE_ID: ${{ secrets.CODE_COVERAGE_ID }}
+        with:
+          coverageCommand: make test-coverage
+          debug: true
