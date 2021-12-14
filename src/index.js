@@ -40,7 +40,6 @@ const genDiff = (filename1, filename2) => {
 
   result += '}';
 
-  console.log(result.trim());
   return result.trim();
 };
 
