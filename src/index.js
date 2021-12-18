@@ -13,13 +13,12 @@ const getDifferencesOfObjects = (tree1, tree2) => {
   const keys2 = _.keys(tree2);
   const keys = _.union(keys1, keys2);
   const sortedKeys = _.sortBy(keys);
-  console.log(`KEYS: ${sortedKeys}`);
 
   const propertiesCollection = sortedKeys.reduce((result, key) => {
     const newObj = {};
-    console.log(`CURRENT KEY: ${key}`);
     if (_.isObject(tree1[key]) && _.isObject(tree2[key])) {
       newObj.property = key;
+      newObj.value = getDifferencesOfObjects(tree1[key], tree2[key]);
       result.push(newObj, getDifferencesOfObjects(tree1[key], tree2[key]));
     }
     if (!_.isObject(tree1[key]) || !_.isObject(tree2[key])) {
@@ -63,26 +62,36 @@ const genDiff = (filename1, filename2) => {
 
   const unformattedTree = getDifferencesOfObjects(obj1, obj2);
 
-  // FORMAT TREE
+  // BUILD A TREE
   const buildAST = (arr) => {
-    const resultObj = {};
-    arr.flatMap((item) => {
-      if (item.status === 'unchanged') {
-        resultObj.value = item.value;
-      } else if (item.status === 'added') {
-        // TODO
-      } else if (item.status === 'deleted') {
-        // TODO
+    const newArr = arr.flatMap((item) => {
+      const {
+        property, status, value, oldValue, newValue,
+      } = item;
+      const dataObj = {};
+      if (status === 'unchanged') {
+        dataObj[property] = value;
+      } else if (status === 'deleted') {
+        dataObj[`- ${property}`] = value;
+      } else if (status === 'added') {
+        dataObj[`+ ${property}`] = value;
+      } else if (status === 'changed') {
+        dataObj[`- ${property}`] = oldValue;
+        dataObj[`+ ${property}`] = newValue;
       } else {
-        // TODO
+        if (value) dataObj[property] = buildAST(value);
       }
-      return null;
+      return dataObj;
     });
+    return newArr;
   };
 
-  const result = buildAST(unformattedTree);
+  const treeObject = buildAST(unformattedTree);
 
-  return unformattedTree;
+  const result = stylish(treeObject);
+  console.log(result);
+
+  return treeObject;
 };
 
 export default genDiff;
