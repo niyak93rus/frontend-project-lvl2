@@ -6,7 +6,6 @@ import { readFileSync } from 'fs';
 import _ from 'lodash';
 import * as path from 'path';
 import parse from './parsers.js';
-import stylish from './stylish.js';
 
 const getDifferencesOfObjects = (tree1, tree2) => {
   const keys1 = _.keys(tree1);
@@ -19,7 +18,8 @@ const getDifferencesOfObjects = (tree1, tree2) => {
     if (_.isObject(tree1[key]) && _.isObject(tree2[key])) {
       newObj.property = key;
       newObj.value = getDifferencesOfObjects(tree1[key], tree2[key]);
-      result.push(newObj, getDifferencesOfObjects(tree1[key], tree2[key]));
+      newObj.status = 'parent';
+      result.push(newObj);
     }
     if (!_.isObject(tree1[key]) || !_.isObject(tree2[key])) {
       newObj.property = key;
@@ -39,7 +39,6 @@ const getDifferencesOfObjects = (tree1, tree2) => {
       }
       result.push(newObj);
     }
-    console.log(newObj);
 
     return result;
   }, []);
@@ -62,36 +61,53 @@ const genDiff = (filename1, filename2) => {
 
   const unformattedTree = getDifferencesOfObjects(obj1, obj2);
 
+  const stringify = (obj, replacer = ' ', spacesCount = 2) => {
+    let depthLevel = 0;
+    const inner = (data) => {
+      if (typeof data !== 'object' || data === null) {
+        return String(data);
+      }
+      const entries = Object.entries(data);
+      depthLevel += 1;
+      const result = entries
+        .reduce((acc, [key, value], currentIndex) => {
+          const str = `${replacer.repeat(spacesCount * depthLevel)}${key}: ${inner(value)}`;
+          acc.push(str);
+          if (currentIndex === entries.length - 1) {
+            while (depthLevel >= 1) {
+              acc.push(`${replacer.repeat(spacesCount * (depthLevel - 1))}}`);
+              depthLevel -= 1;
+            }
+          }
+
+          return acc;
+        }, ['{']);
+      return result.join('\n');
+    };
+
+    return inner(obj);
+  };
+
   // BUILD A TREE
-  const buildAST = (arr) => {
-    const newArr = arr.flatMap((item) => {
+  const buildTree = (arr) => {
+    const reformat = arr.flatMap((item) => {
       const {
         property, status, value, oldValue, newValue,
       } = item;
-      const dataObj = {};
-      if (status === 'unchanged') {
-        dataObj[property] = value;
-      } else if (status === 'deleted') {
-        dataObj[`- ${property}`] = value;
-      } else if (status === 'added') {
-        dataObj[`+ ${property}`] = value;
-      } else if (status === 'changed') {
-        dataObj[`- ${property}`] = oldValue;
-        dataObj[`+ ${property}`] = newValue;
-      } else {
-        if (value) dataObj[property] = buildAST(value);
+      switch (status) {
+        case 'unchanged': return `${property}: ${stringify(value)}`;
+        case 'deleted': return `- ${property}: ${stringify(value)}`;
+        case 'added': return `+ ${property}: ${stringify(value)}`;
+        case 'changed': return `- ${property}: ${stringify(oldValue)}\n +${property}: ${stringify(newValue)}`;
+        default: return `${property}: ${value}`;
       }
-      return dataObj;
     });
-    return newArr;
+
+    return reformat.join('\n');
   };
 
-  const treeObject = buildAST(unformattedTree);
-
-  const result = stylish(treeObject);
-  console.log(result);
-
-  return treeObject;
+  console.log(buildTree(unformattedTree));
+  return buildTree(unformattedTree);
 };
 
 export default genDiff;
