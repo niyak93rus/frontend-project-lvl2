@@ -6,6 +6,7 @@ import { readFileSync } from 'fs';
 import _ from 'lodash';
 import * as path from 'path';
 import parse from './parsers.js';
+import stringify from './stringify.js';
 
 const getDifferencesOfObjects = (tree1, tree2) => {
   const keys1 = _.keys(tree1);
@@ -61,49 +62,25 @@ const genDiff = (filename1, filename2) => {
 
   const unformattedTree = getDifferencesOfObjects(obj1, obj2);
 
-  const stringify = (obj, replacer = ' ', spacesCount = 2) => {
-    let depthLevel = 0;
-    const inner = (data) => {
-      if (typeof data !== 'object' || data === null) {
-        return String(data);
-      }
-      const entries = Object.entries(data);
-      depthLevel += 1;
-      const result = entries
-        .reduce((acc, [key, value], currentIndex) => {
-          const str = `${replacer.repeat(spacesCount * depthLevel)}${key}: ${inner(value)}`;
-          acc.push(str);
-          if (currentIndex === entries.length - 1) {
-            while (depthLevel >= 1) {
-              acc.push(`${replacer.repeat(spacesCount * (depthLevel - 1))}}`);
-              depthLevel -= 1;
-            }
-          }
+  const buildTree = (arr) => {
+    const reformat = (data) => {
+      const formatted = data.flatMap((item) => {
+        const {
+          property, status, value, oldValue, newValue,
+        } = item;
+        switch (status) {
+          case 'unchanged': return `${property}: ${stringify(value)}`;
+          case 'deleted': return `- ${property}: ${stringify(value)}`;
+          case 'added': return `+ ${property}: ${stringify(value)}`;
+          case 'changed': return `- ${property}: ${stringify(oldValue)}\n+ ${property}: ${stringify(newValue)}`;
+          default: return `${property}: {\n${reformat(value)}\n}`;
+        }
+      });
 
-          return acc;
-        }, ['{']);
-      return result.join('\n');
+      return formatted.join('\n');
     };
 
-    return inner(obj);
-  };
-
-  // BUILD A TREE
-  const buildTree = (arr) => {
-    const reformat = arr.flatMap((item) => {
-      const {
-        property, status, value, oldValue, newValue,
-      } = item;
-      switch (status) {
-        case 'unchanged': return `${property}: ${stringify(value)}`;
-        case 'deleted': return `- ${property}: ${stringify(value)}`;
-        case 'added': return `+ ${property}: ${stringify(value)}`;
-        case 'changed': return `- ${property}: ${stringify(oldValue)}\n +${property}: ${stringify(newValue)}`;
-        default: return `${property}: ${value}`;
-      }
-    });
-
-    return reformat.join('\n');
+    return reformat(arr);
   };
 
   console.log(buildTree(unformattedTree));
