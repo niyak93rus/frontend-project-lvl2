@@ -19,8 +19,8 @@ const getDifferencesOfObjects = (tree1, tree2) => {
     const newObj = {};
     if (_.isObject(tree1[key]) && _.isObject(tree2[key])) {
       newObj.property = key;
-      newObj.children = getDifferencesOfObjects(tree1[key], tree2[key]);
       newObj.type = 'hasChildren';
+      newObj.children = getDifferencesOfObjects(tree1[key], tree2[key]);
       result.push(newObj);
     }
     if (!_.isObject(tree1[key]) || !_.isObject(tree2[key])) {
