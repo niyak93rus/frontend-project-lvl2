@@ -24,7 +24,6 @@ const plain = (tree) => {
     const result = node.flatMap(({
       property, type, value, newValue, oldValue, children,
     }) => {
-      console.log(path);
       switch (type) {
         case 'deleted': return `Property '${pathMaker(path, property)}' was removed`;
         case 'added': return `Property '${pathMaker(path, property)}' was added with value: ${objectReplacer(quoteAdder(value))}`;
