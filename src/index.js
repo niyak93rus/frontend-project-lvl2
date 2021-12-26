@@ -7,6 +7,7 @@ import _ from 'lodash';
 import * as path from 'path';
 import parse from './parsers.js';
 import stylish from './stylish.js';
+import plain from './plain.js';
 
 const getDifferencesOfObjects = (tree1, tree2) => {
   const keys1 = _.keys(tree1);
@@ -47,7 +48,7 @@ const getDifferencesOfObjects = (tree1, tree2) => {
   return propertiesCollection;
 };
 
-const genDiff = (filename1, filename2) => {
+const genDiff = (filename1, filename2, formatName) => {
   const path1 = path.resolve(process.cwd(), filename1);
   const path2 = path.resolve(process.cwd(), filename2);
 
@@ -61,9 +62,12 @@ const genDiff = (filename1, filename2) => {
   const obj2 = parse(file2, format2);
 
   const unformattedTree = getDifferencesOfObjects(obj1, obj2);
-
-  console.log(stylish(unformattedTree));
-  return stylish(unformattedTree);
+  if (formatName === 'stylish') {
+    return stylish(unformattedTree);
+  }
+  if (formatName === 'plain') {
+    return plain(unformattedTree);
+  }
 };
 
 export default genDiff;
