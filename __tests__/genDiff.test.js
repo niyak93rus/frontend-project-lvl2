@@ -33,3 +33,11 @@ test('generate PLAIN diff between JSON and YAML files', async () => {
   const expectedFile = fs.readFileSync(getFixturePath('resultPlain.txt'), 'utf-8');
   expect(genDiff(file1, file2, formatName)).toBe(expectedFile);
 });
+
+test('generate JSON format diff between JSON and YAML files', async () => {
+  const file1 = getFixturePath('file1.json');
+  const file2 = getFixturePath('file2.json');
+  const formatName = 'json';
+  const expectedFile = fs.readFileSync(getFixturePath('resultJSON.txt'), 'utf-8');
+  expect(genDiff(file1, file2, formatName)).toBe(expectedFile);
+});
