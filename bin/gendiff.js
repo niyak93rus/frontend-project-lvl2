@@ -2,7 +2,7 @@
 /* eslint-disable import/extensions */
 /* eslint-disable no-console */
 import { program } from 'commander';
-import genDiff from '../src/index.js';
+import genDiff from '../formatters/index.js';
 
 program
   .arguments('<filepath1> <filepath2>')

@@ -3,7 +3,7 @@ import { test, expect } from '@jest/globals';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
-import genDiff from '../src/index';
+import genDiff from '../formatters/index';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
