@@ -3,6 +3,9 @@ install: install-deps
 install-deps:
 	npm ci
 
+link: 
+	npm link
+
 test:
 	npm test
 
