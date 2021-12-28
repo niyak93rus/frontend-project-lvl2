@@ -44,7 +44,7 @@ const getDifferencesOfObjects = (tree1, tree2) => {
 
     return result;
   }, []);
-  console.log(propertiesCollection);
+
   return propertiesCollection;
 };
 
