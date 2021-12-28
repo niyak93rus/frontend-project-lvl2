@@ -21,7 +21,7 @@ const getDifferencesOfObjects = (tree1, tree2) => {
       newObj.property = key;
       newObj.type = 'hasChildren';
       newObj.children = getDifferencesOfObjects(tree1[key], tree2[key]);
-      result.push(newObj);
+      return [...result, newObj];
     }
     if (!_.isObject(tree1[key]) || !_.isObject(tree2[key])) {
       newObj.property = key;
@@ -39,11 +39,12 @@ const getDifferencesOfObjects = (tree1, tree2) => {
         newObj.type = 'unchanged';
         newObj.value = tree1[key];
       }
-      result.push(newObj);
+      return [...result, newObj];
     }
 
     return result;
   }, []);
+  console.log(propertiesCollection);
   return propertiesCollection;
 };
 
