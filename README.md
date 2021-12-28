@@ -1,5 +1,18 @@
 [![Actions Status](https://github.com/niyak93rus/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/niyak93rus/frontend-project-lvl2/actions) [![Linter-check](https://github.com/niyak93rus/frontend-project-lvl2/actions/workflows/linter-check.yml/badge.svg)](https://github.com/niyak93rus/frontend-project-lvl2/actions/workflows/linter-check.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/1eed5a3c4bbcc15805ab/maintainability)](https://codeclimate.com/github/niyak93rus/frontend-project-lvl2/maintainability)[![Test Coverage](https://api.codeclimate.com/v1/badges/1eed5a3c4bbcc15805ab/test_coverage)](https://codeclimate.com/github/niyak93rus/frontend-project-lvl2/test_coverage)
 
+### Installing and Usage
+    # install dependencies
+    make install
+
+    # install the package
+    make link
+
+    # help
+    gendiff -h
+
+    # compare your files
+    gendiff yourfile1.json yourfile2.yml
+
 ### DEMO
 Demo for plain objects (step 3):
 [![asciicast](https://asciinema.org/a/8mW8Lo37BzvMInbUBXgVoZhVr.svg)](https://asciinema.org/a/8mW8Lo37BzvMInbUBXgVoZhVr)
