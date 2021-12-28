@@ -59,8 +59,6 @@ const genDiff = (filename1, filename2, formatName = 'stylish') => {
 
   const obj1 = parse(file1, format1);
   const obj2 = parse(file2, format2);
-  console.log(obj1);
-  console.log(obj2);
 
   const unformattedTree = getDifferencesOfObjects(obj1, obj2);
 
