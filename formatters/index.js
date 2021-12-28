@@ -17,29 +17,25 @@ const getDifferencesOfObjects = (tree1, tree2) => {
 
   const propertiesCollection = sortedKeys.reduce((result, key) => {
     if (_.isObject(tree1[key]) && _.isObject(tree2[key])) {
-      // newObj.property = key;
-      // newObj.type = 'hasChildren';
-      // newObj.children = getDifferencesOfObjects(tree1[key], tree2[key]);
       const newObj = { property: key, type: 'hasChildren', children: getDifferencesOfObjects(tree1[key], tree2[key]) };
       return [...result, newObj];
     }
     if (!_.isObject(tree1[key]) || !_.isObject(tree2[key])) {
-      const newObj = {};
-      newObj.property = key;
       if (!_.has(tree2, key)) {
-        newObj.type = 'deleted';
-        newObj.value = tree1[key];
-      } else if (!_.has(tree1, key)) {
-        newObj.type = 'added';
-        newObj.value = tree2[key];
-      } else if (_.has(tree1, key) && _.has(tree2, key) && tree1[key] !== tree2[key]) {
-        newObj.type = 'changed';
-        newObj.oldValue = tree1[key];
-        newObj.newValue = tree2[key];
-      } else {
-        newObj.type = 'unchanged';
-        newObj.value = tree1[key];
+        const newObj = { property: key, type: 'deleted', value: tree1[key] };
+        return [...result, newObj];
       }
+      if (!_.has(tree1, key)) {
+        const newObj = { property: key, type: 'added', value: tree2[key] };
+        return [...result, newObj];
+      }
+      if (_.has(tree1, key) && _.has(tree2, key) && tree1[key] !== tree2[key]) {
+        const newObj = {
+          property: key, type: 'changed', oldValue: tree1[key], newValue: tree2[key],
+        };
+        return [...result, newObj];
+      }
+      const newObj = { property: key, type: 'unchanged', value: tree1[key] };
       return [...result, newObj];
     }
 
