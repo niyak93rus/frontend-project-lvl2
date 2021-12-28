@@ -17,10 +17,10 @@ const getDifferencesOfObjects = (tree1, tree2) => {
 
   const propertiesCollection = sortedKeys.reduce((result, key) => {
     if (_.isObject(tree1[key]) && _.isObject(tree2[key])) {
-      const newObj = {};
-      newObj.property = key;
-      newObj.type = 'hasChildren';
-      newObj.children = getDifferencesOfObjects(tree1[key], tree2[key]);
+      // newObj.property = key;
+      // newObj.type = 'hasChildren';
+      // newObj.children = getDifferencesOfObjects(tree1[key], tree2[key]);
+      const newObj = { property: key, type: 'hasChildren', children: getDifferencesOfObjects(tree1[key], tree2[key]) };
       return [...result, newObj];
     }
     if (!_.isObject(tree1[key]) || !_.isObject(tree2[key])) {
