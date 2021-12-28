@@ -9,45 +9,45 @@ import parse from './parsers.js';
 import stylish from './stylish.js';
 import plain from './plain.js';
 
-const getDifferencesOfObjects = (tree1, tree2) => {
-  const keys1 = _.keys(tree1);
-  const keys2 = _.keys(tree2);
+const getDifferencesOfObjects = (obj1, obj2) => {
+  const keys1 = _.keys(obj1);
+  const keys2 = _.keys(obj2);
   const keys = _.union(keys1, keys2);
   const sortedKeys = _.sortBy(keys);
 
-  const propertiesCollection = sortedKeys.reduce((result, key) => {
-    if (_.isObject(tree1[key]) && _.isObject(tree2[key])) {
-      const newObj = { property: key, type: 'hasChildren', children: getDifferencesOfObjects(tree1[key], tree2[key]) };
-      return [...result, newObj];
+  const propertiesCollection = sortedKeys.reduce((propsCollection, key) => {
+    if (_.isObject(obj1[key]) && _.isObject(obj2[key])) {
+      const newObj = { property: key, type: 'hasChildren', children: getDifferencesOfObjects(obj1[key], obj2[key]) };
+      return [...propsCollection, newObj];
     }
-    if (!_.isObject(tree1[key]) || !_.isObject(tree2[key])) {
-      if (!_.has(tree2, key)) {
-        const newObj = { property: key, type: 'deleted', value: tree1[key] };
-        return [...result, newObj];
+    if (!_.isObject(obj1[key]) || !_.isObject(obj2[key])) {
+      if (!_.has(obj2, key)) {
+        const newObj = { property: key, type: 'deleted', value: obj1[key] };
+        return [...propsCollection, newObj];
       }
-      if (!_.has(tree1, key)) {
-        const newObj = { property: key, type: 'added', value: tree2[key] };
-        return [...result, newObj];
+      if (!_.has(obj1, key)) {
+        const newObj = { property: key, type: 'added', value: obj2[key] };
+        return [...propsCollection, newObj];
       }
-      if (_.has(tree1, key) && _.has(tree2, key) && tree1[key] !== tree2[key]) {
+      if (_.has(obj1, key) && _.has(obj2, key) && obj1[key] !== obj2[key]) {
         const newObj = {
-          property: key, type: 'changed', oldValue: tree1[key], newValue: tree2[key],
+          property: key, type: 'changed', oldValue: obj1[key], newValue: obj2[key],
         };
-        return [...result, newObj];
+        return [...propsCollection, newObj];
       }
-      const newObj = { property: key, type: 'unchanged', value: tree1[key] };
-      return [...result, newObj];
+      const newObj = { property: key, type: 'unchanged', value: obj1[key] };
+      return [...propsCollection, newObj];
     }
 
-    return result;
+    return propsCollection;
   }, []);
 
   return propertiesCollection;
 };
 
-const genDiff = (filename1, filename2, formatName) => {
-  const path1 = path.resolve(process.cwd(), filename1);
-  const path2 = path.resolve(process.cwd(), filename2);
+const genDiff = (filepath1, filepath2, formatName) => {
+  const path1 = path.resolve(process.cwd(), filepath1);
+  const path2 = path.resolve(process.cwd(), filepath2);
 
   const format1 = path.extname(path1);
   const format2 = path.extname(path2);

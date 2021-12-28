@@ -1,18 +1,18 @@
-const quoteAdder = (data) => {
+const addQuotes = (data) => {
   if (typeof data === 'string') {
     return `'${data}'`;
   }
   return data;
 };
 
-const objectReplacer = (data) => {
+const replaceObjects = (data) => {
   if (typeof data === 'object' && data !== null) {
     return '[complex value]';
   }
   return data;
 };
 
-const pathMaker = (path, prop) => {
+const getPath = (path, prop) => {
   if (path.length === 0) {
     return `${prop}`;
   }
@@ -25,9 +25,9 @@ const plain = (tree) => {
       property, type, value, newValue, oldValue, children,
     }) => {
       switch (type) {
-        case 'deleted': return `Property '${pathMaker(path, property)}' was removed`;
-        case 'added': return `Property '${pathMaker(path, property)}' was added with value: ${objectReplacer(quoteAdder(value))}`;
-        case 'changed': return `Property '${pathMaker(path, property)}' was updated. From ${objectReplacer(quoteAdder(oldValue))} to ${objectReplacer(quoteAdder(newValue))}`;
+        case 'deleted': return `Property '${getPath(path, property)}' was removed`;
+        case 'added': return `Property '${getPath(path, property)}' was added with value: ${replaceObjects(addQuotes(value))}`;
+        case 'changed': return `Property '${getPath(path, property)}' was updated. From ${replaceObjects(addQuotes(oldValue))} to ${replaceObjects(addQuotes(newValue))}`;
         case 'hasChildren': return iter(children, path.concat(property));
         default: return [];
       }
