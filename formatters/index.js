@@ -66,7 +66,6 @@ const genDiff = (filename1, filename2, formatName) => {
     return plain(unformattedTree);
   }
   if (formatName === 'json') {
-    console.log(JSON.stringify(unformattedTree));
     return JSON.stringify(unformattedTree);
   }
   return stylish(unformattedTree);
