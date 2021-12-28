@@ -63,14 +63,11 @@ const genDiff = (filename1, filename2, formatName) => {
   const unformattedTree = getDifferencesOfObjects(obj1, obj2);
 
   if (formatName === 'plain') {
-    console.log(plain(unformattedTree));
     return plain(unformattedTree);
   }
   if (formatName === 'json') {
-    console.log(JSON.stringify(unformattedTree));
     return JSON.stringify(unformattedTree);
   }
-  console.log(stylish(unformattedTree));
   return stylish(unformattedTree);
 };
 

@@ -1,3 +1,5 @@
-import gendiff from './formatters/index';
+import genDiff from './formatters/index';
 
-export default gendiff;
+console.log(genDiff);
+
+export default genDiff;
