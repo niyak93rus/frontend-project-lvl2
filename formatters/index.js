@@ -47,7 +47,7 @@ const getDifferencesOfObjects = (tree1, tree2) => {
   return propertiesCollection;
 };
 
-const genDiff = (filename1, filename2, formatName) => {
+const genDiff = (filename1, filename2, formatName = 'stylish') => {
   const path1 = path.resolve(process.cwd(), filename1);
   const path2 = path.resolve(process.cwd(), filename2);
 
