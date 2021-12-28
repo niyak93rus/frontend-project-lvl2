@@ -25,11 +25,16 @@ const plain = (tree) => {
       property, type, value, newValue, oldValue, children,
     }) => {
       switch (type) {
-        case 'deleted': return `Property '${getPath(path, property)}' was removed`;
-        case 'added': return `Property '${getPath(path, property)}' was added with value: ${replaceObjects(addQuotes(value))}`;
-        case 'changed': return `Property '${getPath(path, property)}' was updated. From ${replaceObjects(addQuotes(oldValue))} to ${replaceObjects(addQuotes(newValue))}`;
-        case 'hasChildren': return iter(children, path.concat(property));
-        default: return [];
+        case 'deleted':
+          return `Property '${getPath(path, property)}' was removed`;
+        case 'added':
+          return `Property '${getPath(path, property)}' was added with value: ${replaceObjects(addQuotes(value))}`;
+        case 'changed':
+          return `Property '${getPath(path, property)}' was updated. From ${replaceObjects(addQuotes(oldValue))} to ${replaceObjects(addQuotes(newValue))}`;
+        case 'hasChildren':
+          return iter(children, path.concat(property));
+        default:
+          return [];
       }
     });
     return result.join('\n');

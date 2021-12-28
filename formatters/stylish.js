@@ -45,7 +45,7 @@ export default (tree) => {
         case 'hasChildren':
           return `${makeIndent(depth + indentSize)}  ${property}: ${iter(children, depth + indentSize * 2)}`;
         default:
-          return ('Wrong type');
+          throw new Error(`Wrong type: '${type}'!`);
       }
     });
     return [
