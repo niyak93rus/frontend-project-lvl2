@@ -8,7 +8,7 @@ import genDiff from '../formatters/index';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const getFixturePath = (filename) => path.join(__dirname, '..', '__tests__', '__fixtures__', filename);
+const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 
 test('generate STYLISH diff between two JSON files', () => {
   const file1 = getFixturePath('file1.json');
