@@ -16,14 +16,15 @@ const getDifferencesOfObjects = (tree1, tree2) => {
   const sortedKeys = _.sortBy(keys);
 
   const propertiesCollection = sortedKeys.reduce((result, key) => {
-    const newObj = {};
     if (_.isObject(tree1[key]) && _.isObject(tree2[key])) {
+      const newObj = {};
       newObj.property = key;
       newObj.type = 'hasChildren';
       newObj.children = getDifferencesOfObjects(tree1[key], tree2[key]);
       return [...result, newObj];
     }
     if (!_.isObject(tree1[key]) || !_.isObject(tree2[key])) {
+      const newObj = {};
       newObj.property = key;
       if (!_.has(tree2, key)) {
         newObj.type = 'deleted';
