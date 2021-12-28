@@ -17,3 +17,4 @@ const options = program.opts();
 
 if (options.version) console.log(program.version);
 if (options.help) console.log('$shell help');
+console.log(program.action);
