@@ -70,5 +70,5 @@ const genDiff = (filename1, filename2, formatName = 'stylish') => {
   }
   return stylish(unformattedTree);
 };
-
+console.log(genDiff);
 export default genDiff;

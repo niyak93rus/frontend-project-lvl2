@@ -9,7 +9,7 @@ program
   .version('0.0.1', '-V, --vers', 'output the current version')
   .description('Compares two configuration files and shows a difference.')
   .option('-f, --formatter [type]', 'stylish', 'stylish')
-  .action(console.log(genDiff));
+  .action(genDiff);
 
 program.parse(process.argv);
 
