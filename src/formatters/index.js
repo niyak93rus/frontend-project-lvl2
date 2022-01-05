@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import plain from './plain.js';
 import stylish from './stylish.js';
 

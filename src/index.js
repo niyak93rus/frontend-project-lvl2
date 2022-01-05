@@ -1,7 +1,3 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-param-reassign */
-/* eslint-disable import/extensions */
-
 import { readFileSync } from 'fs';
 import * as path from 'path';
 import parse from './parsers.js';
