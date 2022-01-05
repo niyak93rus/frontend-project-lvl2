@@ -1,5 +1,6 @@
-import plain from './plain';
-import stylish from './stylish';
+/* eslint-disable import/extensions */
+import plain from './plain.js';
+import stylish from './stylish.js';
 
 const formatTree = (tree, formatName) => {
   if (formatName === 'plain') {
