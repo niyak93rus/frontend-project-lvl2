@@ -5,11 +5,11 @@
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
+  "main": "index.js",
   "scripts": {
     "test": "jest"
   },
   "type": "module",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/niyak93rus/frontend-project-lvl2.git"
