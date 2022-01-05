@@ -31,7 +31,7 @@ const plain = (tree) => {
           return `Property '${getPath(path, property)}' was added with value: ${replaceObjects(addQuotes(value))}`;
         case 'changed':
           return `Property '${getPath(path, property)}' was updated. From ${replaceObjects(addQuotes(oldValue))} to ${replaceObjects(addQuotes(newValue))}`;
-        case 'hasChildren':
+        case 'root':
           return iter(children, path.concat(property));
         default:
           return [];

@@ -6,7 +6,7 @@
     "gendiff": "bin/gendiff.js"
   },
   "scripts": {
-    "test": "jest --watchAll"
+    "test": "jest --watch"
   },
   "type": "module",
   "repository": {

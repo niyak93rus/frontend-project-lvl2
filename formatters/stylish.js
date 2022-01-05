@@ -42,7 +42,7 @@ export default (tree) => {
           return `${makeIndent(depth + indentSize)}- ${property}: ${stringify(oldValue, depth)}\n${makeIndent(depth + indentSize)}+ ${property}: ${stringify(newValue, depth)}`;
         case 'unchanged':
           return `${makeIndent(depth + indentSize)}  ${property}: ${stringify(value, depth)}`;
-        case 'hasChildren':
+        case 'root':
           return `${makeIndent(depth + indentSize)}  ${property}: ${iter(children, depth + indentSize * 2)}`;
         default:
           throw new Error(`Wrong type: '${type}'!`);

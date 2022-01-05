@@ -16,7 +16,7 @@ describe('test diff generation between two files', () => {
     ['stylish', getFixturePath('file1.yml'), getFixturePath('file2.yml'), fs.readFileSync(getFixturePath('resultStylish.txt'), 'utf-8')],
     ['plain', getFixturePath('file1.json'), getFixturePath('file2.yml'), fs.readFileSync(getFixturePath('resultPlain.txt'), 'utf-8')],
     ['json', getFixturePath('file1.json'), getFixturePath('file2.json'), fs.readFileSync(getFixturePath('resultJSON.txt'), 'utf-8')],
-  ])('when file1 and file2 are compared using %s formatter returns what expected', (formatName, file1, file2, expectedFile) => {
+  ])('genDiff compares file1 and file2 using %s formatter and returns what expected', (formatName, file1, file2, expectedFile) => {
     expect(genDiff(file1, file2, formatName)).toBe(expectedFile);
   });
 });
