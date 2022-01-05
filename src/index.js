@@ -5,9 +5,8 @@
 import { readFileSync } from 'fs';
 import * as path from 'path';
 import parse from './parsers.js';
-import stylish from './stylish.js';
-import plain from './plain.js';
 import createDiffTree from './createDiffTree.js';
+import formatTree from './formatters/index.js';
 
 const getObjFromFile = (filepath) => {
   const pathResolve = path.resolve(process.cwd(), filepath);
@@ -24,13 +23,7 @@ const genDiff = (filepath1, filepath2, formatName) => {
 
   const unformattedTree = createDiffTree(obj1, obj2);
 
-  if (formatName === 'plain') {
-    return plain(unformattedTree);
-  }
-  if (formatName === 'json') {
-    return JSON.stringify(unformattedTree);
-  }
-  return stylish(unformattedTree);
+  return formatTree(unformattedTree, formatName);
 };
 
 export default genDiff;
