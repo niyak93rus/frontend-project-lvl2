@@ -6,7 +6,7 @@
     "gendiff": "bin/gendiff.js"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest --watchAll"
   },
   "type": "module",
   "repository": {
@@ -20,12 +20,12 @@
   },
   "homepage": "https://github.com/niyak93rus/frontend-project-lvl2#readme",
   "dependencies": {
-    "@jest/globals": "^27.4.2",
     "commander": "^8.3.0",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "@jest/globals": "^27.4.6",
     "eslint": "^8.5.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.3",
