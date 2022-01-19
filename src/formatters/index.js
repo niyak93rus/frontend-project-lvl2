@@ -8,6 +8,7 @@ const formatTree = (tree, formatName) => {
   if (formatName === 'json') {
     return JSON.stringify(tree);
   }
+
   return stylish(tree);
 };
 

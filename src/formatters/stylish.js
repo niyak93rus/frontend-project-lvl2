@@ -1,49 +1,52 @@
 import _ from 'lodash';
 
-const makeIndent = (n) => ' '.repeat(n);
+const makeIndent = (n) => '  '.repeat(n);
 
 const indentSize = 2;
-const baseIndent = 4;
-const baseCloseIndent = 2;
 
 const stringify = (data, depth) => {
+  const closingBracketsIndent = (depth - 1) * indentSize;
   if (!_.isPlainObject(data)) {
     return data;
   }
-  const currentIndent = depth + indentSize * baseIndent;
-  const closeIndent = indentSize * baseCloseIndent;
+
   const lines = Object
     .entries(data)
     .map(([key, value]) => {
       if (_.isPlainObject(value)) {
-        return `${makeIndent(currentIndent)}${key}: ${stringify(value, depth + closeIndent)}`;
+        return `${makeIndent(depth * indentSize)}${key}: ${stringify(value, depth + 1)}`;
       }
-      return `${makeIndent(currentIndent)}${key}: ${value}`;
+      return `${makeIndent(depth * indentSize)}${key}: ${value}`;
     });
 
   return [
     '{',
     ...lines,
-    `${makeIndent(depth + closeIndent)}}`,
+    `${makeIndent(closingBracketsIndent)}}`,
   ].join('\n');
 };
 
 export default (tree) => {
   const iter = (currentValue, depth) => {
+    const modifiedLineIndent = depth * indentSize - 1;
+    const closingBracketsIndent = (depth - 1) * indentSize;
+
     const lines = currentValue.map(({
       property, type, value, oldValue, newValue, children,
     }) => {
       switch (type) {
         case 'added':
-          return `${makeIndent(depth + indentSize)}+ ${property}: ${stringify(value, depth)}`;
+          return `${makeIndent(modifiedLineIndent)}+ ${property}: ${stringify(value, depth + 1)}`;
         case 'deleted':
-          return `${makeIndent(depth + indentSize)}- ${property}: ${stringify(value, depth)}`;
+          return `${makeIndent(modifiedLineIndent)}- ${property}: ${stringify(value, depth + 1)}`;
         case 'changed':
-          return `${makeIndent(depth + indentSize)}- ${property}: ${stringify(oldValue, depth)}\n${makeIndent(depth + indentSize)}+ ${property}: ${stringify(newValue, depth)}`;
+          return `${makeIndent(modifiedLineIndent)}- ${property}: ${stringify(oldValue, depth + 1)}\n${makeIndent(modifiedLineIndent)}+ ${property}: ${stringify(newValue, depth + 1)}`;
         case 'unchanged':
-          return `${makeIndent(depth + indentSize)}  ${property}: ${stringify(value, depth)}`;
+          return `${makeIndent(depth * indentSize)}${property}: ${stringify(value, depth)}`;
+        case 'nested':
+          return `${makeIndent(depth * indentSize)}${property}: ${iter(children, depth + 1)}`;
         case 'root':
-          return `${makeIndent(depth + indentSize)}  ${property}: ${iter(children, depth + indentSize * 2)}`;
+          return `${iter(children, depth).slice(2, -2)}`;
         default:
           throw new Error(`Wrong type: '${type}'!`);
       }
@@ -51,8 +54,8 @@ export default (tree) => {
     return [
       '{',
       ...lines,
-      `${makeIndent(depth)}}`,
+      `${makeIndent(closingBracketsIndent)}}`,
     ].join('\n');
   };
-  return iter(tree, 0);
+  return iter(tree, 1);
 };
