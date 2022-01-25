@@ -32,7 +32,4 @@ const createDiffTree = (obj1, obj2) => {
   return diffTree;
 };
 
-export default (obj1, obj2) => {
-  const newObj = { type: 'root', children: createDiffTree(obj1, obj2) };
-  return [newObj];
-};
+export default (obj1, obj2) => ({ type: 'root', children: createDiffTree(obj1, obj2) });

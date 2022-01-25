@@ -15,29 +15,23 @@ const getPath = (path, prop) => {
   return [...path, prop].join('.');
 };
 
-const plain = (tree) => {
-  const iter = (node, path) => {
-    const result = node.map(({
-      property, type, value, newValue, oldValue, children,
-    }) => {
-      switch (type) {
-        case 'deleted':
-          return `Property '${getPath(path, property)}' was removed\n`;
-        case 'added':
-          return `Property '${getPath(path, property)}' was added with value: ${stringify(value)}\n`;
-        case 'changed':
-          return `Property '${getPath(path, property)}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}\n`;
-        case 'nested':
-          return iter(children, path.concat(property));
-        case 'root':
-          return iter(children, []);
-        default:
-          return [];
-      }
-    });
-    return result.join('');
-  };
-  return iter(tree, []).trim();
+const plain = (node, path) => {
+  switch (node.type) {
+    case 'deleted':
+      return `Property '${getPath(path, node.property)}' was removed\n`;
+    case 'added':
+      return `Property '${getPath(path, node.property)}' was added with value: ${stringify(node.value)}\n`;
+    case 'changed':
+      return `Property '${getPath(path, node.property)}' was updated. From ${stringify(node.oldValue)} to ${stringify(node.newValue)}\n`;
+    case 'nested':
+      return node.children.flatMap((child) => plain(child, path.concat(node.property)));
+    case 'root':
+      return node.children.flatMap((child) => plain(child, []));
+    case 'unchanged':
+      return [];
+    default:
+      throw new Error(`Unnknown type of node ${node.type}`);
+  }
 };
 
 export default plain;

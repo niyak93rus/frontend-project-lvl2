@@ -3,7 +3,7 @@ import stylish from './stylish.js';
 
 const formatTree = (tree, formatName) => {
   if (formatName === 'plain') {
-    return plain(tree);
+    return plain(tree).join('').trim();
   }
   if (formatName === 'json') {
     return JSON.stringify(tree);
