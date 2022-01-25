@@ -27,10 +27,8 @@ const stringify = (data, depth) => {
 };
 
 const stylish = (node, depth) => {
-  console.log(node);
   const modifiedLineIndent = depth * indentSize - 1;
-  const closingBracketsIndent = (depth - 1) * indentSize;
-  console.log(node.type);
+  const closingBracketsIndent = depth * indentSize;
   switch (node.type) {
     case 'added':
       return `${makeIndent(modifiedLineIndent)}+ ${node.property}: ${stringify(node.value, depth + 1)}`;
@@ -41,13 +39,9 @@ const stylish = (node, depth) => {
     case 'unchanged':
       return `${makeIndent(depth * indentSize)}${node.property}: ${stringify(node.value, depth)}`;
     case 'nested':
-      return `${makeIndent(depth * indentSize)}${node.property}: ${node.children.map((child) => stylish(child, depth + 1))}`;
+      return [`${makeIndent(depth * indentSize)}${node.property}: {`, ...node.children.map((child) => stylish(child, depth + 1)), `${makeIndent(closingBracketsIndent)}}`].join('\n');
     case 'root':
-      return [
-        '{',
-        node.children.map((child) => stylish(child, 1)),
-        `${makeIndent(closingBracketsIndent)}}`,
-      ].join('\n');
+      return ['{', ...node.children.map((child) => stylish(child, depth)), '}'].join('\n');
     default:
       throw new Error(`Wrong type: '${node.type}'!`);
   }

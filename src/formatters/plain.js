@@ -30,7 +30,7 @@ const plain = (node, path) => {
     case 'unchanged':
       return [];
     default:
-      throw new Error(`Unnknown type of node ${node.type}`);
+      throw new Error(`Unknown type of node ${node.type}`);
   }
 };
 

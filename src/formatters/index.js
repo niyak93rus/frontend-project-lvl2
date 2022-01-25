@@ -9,7 +9,7 @@ const formatTree = (tree, formatName) => {
     return JSON.stringify(tree);
   }
 
-  return stylish(tree);
+  return stylish(tree, 1);
 };
 
 export default formatTree;
