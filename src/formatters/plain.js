@@ -8,23 +8,18 @@ const stringify = (data) => {
   return data;
 };
 
-const getPath = (path, prop) => {
-  if (path.length === 0) {
-    return [...path, prop];
-  }
-  return [...path, prop].join('.');
-};
-
-const plain = (node, path) => {
+const plain = (node, path = []) => {
+  const allKeys = [...path, node.property];
+  const pathString = allKeys.join('.');
   switch (node.type) {
     case 'deleted':
-      return `Property '${getPath(path, node.property)}' was removed\n`;
+      return `Property '${pathString}' was removed\n`;
     case 'added':
-      return `Property '${getPath(path, node.property)}' was added with value: ${stringify(node.value)}\n`;
+      return `Property '${pathString}' was added with value: ${stringify(node.value)}\n`;
     case 'changed':
-      return `Property '${getPath(path, node.property)}' was updated. From ${stringify(node.oldValue)} to ${stringify(node.newValue)}\n`;
+      return `Property '${pathString}' was updated. From ${stringify(node.oldValue)} to ${stringify(node.newValue)}\n`;
     case 'nested':
-      return node.children.flatMap((child) => plain(child, path.concat(node.property)));
+      return node.children.flatMap((child) => plain(child, allKeys));
     case 'root':
       return node.children.flatMap((child) => plain(child, []));
     case 'unchanged':
